@@ -8,10 +8,13 @@ export default defineConfig({
   manifest: {
     name: 'Chat Bookmark',
     description: 'Chat with your bookmarks',
-    chrome_url_overrides: {
-      bookmark: 'bookmark.html',
-    },
-    permissions: ['bookmarks'],
+    permissions: ['bookmarks', 'favicon'],
+    web_accessible_resources: [
+      {
+        resources: ['_favicon/*'],
+        matches: ['<all_urls>'],
+      },
+    ],
   },
   vite: () => ({
     plugins: [tailwindcss()],

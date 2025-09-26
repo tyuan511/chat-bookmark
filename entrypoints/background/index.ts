@@ -1,4 +1,4 @@
-import { getBookMarks } from '@/lib/browser'
+import './messaging'
 
 export default defineBackground(() => {
   run()
@@ -6,6 +6,4 @@ export default defineBackground(() => {
 
 async function run() {
   console.log('Hello background!', { id: browser.runtime.id })
-  const bookmarks = await getBookMarks()
-  console.log(`共找到书签${bookmarks.length}条`)
 }
