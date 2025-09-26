@@ -11,6 +11,7 @@ export default defineConfig({
     chrome_url_overrides: {
       bookmark: 'bookmark.html',
     },
+    permissions: ['bookmarks'],
   },
   vite: () => ({
     plugins: [tailwindcss()],
