@@ -1,11 +1,7 @@
-import './App.css'
-
-function App() {
+export function Root() {
   return (
     <div>
       Chat Bookmark is running
     </div>
   )
 }
-
-export default App
