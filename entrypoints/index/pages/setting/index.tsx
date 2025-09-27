@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 
 export function SettingPage() {
@@ -26,7 +27,9 @@ export function SettingPage() {
           </NavLink>
         ))}
       </div>
-      <div className="flex-1 h-full"><Outlet /></div>
+      <ScrollArea className="flex-1 h-[calc(100vh-120px)]">
+        <Outlet />
+      </ScrollArea>
     </div>
   )
 }

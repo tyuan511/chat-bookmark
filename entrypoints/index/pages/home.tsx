@@ -50,7 +50,7 @@ export function HomePage() {
                 <TableCell>{item.status}</TableCell>
                 <TableCell>
                   <Button size="icon" variant="ghost">
-                    <RotateCcw />
+                    <RotateCcw className="size-4" />
                   </Button>
                 </TableCell>
               </TableRow>

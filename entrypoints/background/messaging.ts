@@ -1,5 +1,5 @@
 import { onMessage } from '@/lib/messaging'
-import { modelSettingSchema, supabaseSettingSchema } from '@/lib/types'
+import { modelSettingSchema, supabaseSettingSchema, systemSettingSchema } from '@/lib/types'
 
 onMessage('getBookmarkTree', async () => {
   const bookmarkTree = await browser.bookmarks.getTree()
@@ -31,4 +31,27 @@ onMessage('saveSupabaseSetting', async (setting) => {
     return
   }
   await browser.storage.local.set({ supabaseSetting: setting.data })
+})
+
+onMessage('syncSavedSupabaseSetting', async () => {
+  const { supabaseSetting } = await browser.storage.local.get('supabaseSetting')
+  return supabaseSetting
+})
+
+onMessage('getSystemSetting', async () => {
+  const { systemSetting } = await browser.storage.local.get('systemSetting')
+  return systemSetting
+})
+
+onMessage('saveSystemSetting', async (setting) => {
+  const result = systemSettingSchema.safeParse(setting.data)
+  if (!result.success) {
+    return
+  }
+  await browser.storage.local.set({ systemSetting: setting.data })
+})
+
+onMessage('syncSavedSystemSetting', async () => {
+  const { systemSetting } = await browser.storage.local.get('systemSetting')
+  return systemSetting
 })

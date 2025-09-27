@@ -28,3 +28,18 @@ export const supabaseSettingSchema = z.object({
 })
 
 export type SupabaseSettingType = z.infer<typeof supabaseSettingSchema>
+
+export enum Theme {
+  LIGHT = 'light',
+  DARK = 'dark',
+  SYSTEM = 'system',
+}
+
+export const systemSettingSchema = z.object({
+  theme: z.enum(Theme, '请选择一个主题'),
+  language: z.string().min(1, '请选择一种语言'),
+  llmModelName: z.string().min(1, '请选择一个LLM模型'),
+  embeddingModelName: z.string().min(1, '请选择一个Embedding模型'),
+})
+
+export type SystemSettingType = z.infer<typeof systemSettingSchema>

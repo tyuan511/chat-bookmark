@@ -1,16 +1,22 @@
 import { Bolt, Home, Loader2, MessageCircle } from 'lucide-react'
 import { Link, Outlet } from 'react-router'
 import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tree } from '@/components/ui/tree'
 import { useStore } from '../store'
 
 export function Layout() {
-  const { getBookmarks, bookmarks, syncSavedModelSetting, syncSavedSupabaseSetting } = useStore()
+  const { getBookmarks, bookmarks, syncSavedModelSetting, syncSavedSupabaseSetting, syncSavedSystemSetting } = useStore()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([getBookmarks(), syncSavedModelSetting(), syncSavedSupabaseSetting()]).then(() => setLoading(false))
-  }, [getBookmarks, syncSavedModelSetting, syncSavedSupabaseSetting])
+    Promise.all([
+      getBookmarks(),
+      syncSavedModelSetting(),
+      syncSavedSupabaseSetting(),
+      syncSavedSystemSetting(),
+    ]).then(() => setLoading(false))
+  }, [getBookmarks, syncSavedModelSetting, syncSavedSupabaseSetting, syncSavedSystemSetting])
 
   return loading
     ? (
@@ -44,20 +50,22 @@ export function Layout() {
             </div>
           </div>
           <div className="flex flex-1 gap-4">
-            <div className="overflow-auto border rounded-lg p-4 w-[300px] h-full">
-              {bookmarks.length > 0
-                ? (
-                    <Tree
-                      data={bookmarks}
-                      className="w-full"
-                    />
-                  )
-                : (
-                    <div className="flex items-center justify-center h-full text-muted-foreground">
-                      暂无书签
-                    </div>
-                  )}
-            </div>
+            <ScrollArea className="h-[calc(100vh-120px)] border rounded-lg">
+              <div className="p-4  w-[300px]">
+                {bookmarks.length > 0
+                  ? (
+                      <Tree
+                        data={bookmarks}
+                        className="w-full"
+                      />
+                    )
+                  : (
+                      <div className="flex items-center justify-center h-full text-muted-foreground">
+                        暂无书签
+                      </div>
+                    )}
+              </div>
+            </ScrollArea>
             <div className="flex-1">
               <Outlet />
             </div>
