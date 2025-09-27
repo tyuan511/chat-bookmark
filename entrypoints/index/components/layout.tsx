@@ -66,7 +66,7 @@ export function Layout() {
                     )}
               </div>
             </ScrollArea>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <Outlet />
             </div>
           </div>
