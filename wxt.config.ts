@@ -8,7 +8,7 @@ export default defineConfig({
   manifest: {
     name: 'Chat Bookmark',
     description: 'Chat with your bookmarks',
-    permissions: ['bookmarks', 'favicon'],
+    permissions: ['bookmarks', 'favicon', 'storage'],
     web_accessible_resources: [
       {
         resources: ['_favicon/*'],

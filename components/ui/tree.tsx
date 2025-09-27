@@ -1,6 +1,6 @@
 import { ChevronRight, File, Folder, FolderOpen, Link } from 'lucide-react'
 import * as React from 'react'
-import { cn } from '@/lib/utils'
+import { cn, getFavicon } from '@/lib/utils'
 
 interface TreeNode {
   id: string
@@ -62,7 +62,7 @@ function TreeNodeComponent({ ref, node, level, isExpanded, onToggle, onNodeClick
     if (node.icon)
       return node.icon
     if (isLeaf) {
-      return node.url ? <Link className="h-4 w-4" /> : <File className="h-4 w-4" />
+      return node.url ? <img src={getFavicon(node.url)} className="h-4 w-4" /> : <File className="h-4 w-4" />
     }
     return isExpanded ? <FolderOpen className="h-4 w-4" /> : <Folder className="h-4 w-4" />
   }

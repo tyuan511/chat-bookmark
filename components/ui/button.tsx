@@ -1,6 +1,7 @@
 import type { VariantProps } from 'class-variance-authority'
 import { Slot } from '@radix-ui/react-slot'
 import { cva } from 'class-variance-authority'
+import { Loader2 } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
@@ -27,10 +28,15 @@ const buttonVariants = cva(
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9',
       },
+      loading: {
+        true: 'opacity-50 pointer-events-none',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
+      loading: false,
     },
   },
 )
@@ -39,7 +45,9 @@ function Button({
   className,
   variant,
   size,
+  loading,
   asChild = false,
+  children,
   ...props
 }: React.ComponentProps<'button'>
   & VariantProps<typeof buttonVariants> & {
@@ -50,9 +58,13 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, loading, className }))}
+      disabled={loading || props.disabled}
       {...props}
-    />
+    >
+      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {children}
+    </Comp>
   )
 }
 

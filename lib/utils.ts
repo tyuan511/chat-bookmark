@@ -26,3 +26,10 @@ export function flattenBookmarksWithPath(nodes: Browser.bookmarks.BookmarkTreeNo
 
   return result
 }
+
+export function getFavicon(u: string) {
+  const url = new URL(browser.runtime.getURL('/_favicon/' as any))
+  url.searchParams.set('pageUrl', u)
+  url.searchParams.set('size', '32')
+  return url.toString()
+}
