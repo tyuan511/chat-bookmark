@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -38,7 +39,6 @@ export function SystemSettingPage() {
   // 从模型设置中获取可用的模型
   const llmModels = modelSetting?.models.filter(model => model.modelType === ModelType.LLM) || []
   const embeddingModels = modelSetting?.models.filter(model => model.modelType === ModelType.EMBEDDING) || []
-
   const form = useForm<SystemSettingType>({
     resolver: zodResolver(systemSettingSchema as any),
     defaultValues: systemSetting ?? {
@@ -46,6 +46,7 @@ export function SystemSettingPage() {
       language: 'zh-CN',
       llmModelName: '',
       embeddingModelName: '',
+      embeddingDimensions: 1536,
     },
   })
 
@@ -138,7 +139,7 @@ export function SystemSettingPage() {
                           ))
                         )
                       : (
-                          <SelectItem disabled value="">
+                          <SelectItem disabled value="empty">
                             请先设置模型
                           </SelectItem>
                         )}
@@ -185,7 +186,7 @@ export function SystemSettingPage() {
                           ))
                         )
                       : (
-                          <SelectItem disabled value="">
+                          <SelectItem disabled value="empty">
                             请先设置模型
                           </SelectItem>
                         )}
@@ -204,6 +205,31 @@ export function SystemSettingPage() {
                 )}
                 <FormDescription>
                   选择用于文本向量化的嵌入模型
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="embeddingDimensions"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>嵌入模型维度</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={4096}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="输入嵌入模型维度"
+                    value={field.value}
+                    onChange={e => field.onChange(Number.parseInt(e.target.value))}
+                  />
+                </FormControl>
+                <FormDescription>
+                  设置嵌入模型的输出维度（如OpenAI text-embedding-3-small为1536，text-embedding-3-large为3072）
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -231,6 +257,7 @@ export function SystemSettingPage() {
           <li>语言设置会改变界面显示语言</li>
           <li>大语言模型用于对话和文本生成功能</li>
           <li>嵌入模型用于文本向量化和相似度计算</li>
+          <li>嵌入模型维度需要与所选模型的实际输出维度匹配</li>
         </ul>
       </div>
     </div>

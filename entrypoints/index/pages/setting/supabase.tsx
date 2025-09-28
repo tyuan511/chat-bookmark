@@ -72,7 +72,7 @@ export function SupabaseSettingPage() {
             name="supabaseAnonKey"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Supabase Anon Public Key</FormLabel>
+                <FormLabel>Supabase Publishable Key</FormLabel>
                 <FormControl>
                   <Input
                     type="password"
@@ -81,7 +81,7 @@ export function SupabaseSettingPage() {
                   />
                 </FormControl>
                 <FormDescription>
-                  您的 Supabase 项目的匿名密钥 (Anon Key)，用于客户端 API 调用
+                  您的 Supabase 项目的 Publishable Key，用于客户端 API 调用
                 </FormDescription>
                 <FormMessage />
               </FormItem>

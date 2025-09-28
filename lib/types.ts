@@ -24,7 +24,7 @@ export type ModelSettingType = z.infer<typeof modelSettingSchema>
 
 export const supabaseSettingSchema = z.object({
   supabaseUrl: z.url('请输入有效的Supabase URL').regex(/https:\/\/[\w-]+\.supabase\.co/, '请输入有效的Supabase项目URL'),
-  supabaseAnonKey: z.string().min(1, 'Anon Key不能为空').regex(/^eyJ[\w-]*\.[\w-]*\.[\w-]*$/, '请输入有效的JWT格式Anon Key'),
+  supabaseAnonKey: z.string().min(1, 'Anon Key不能为空'),
 })
 
 export type SupabaseSettingType = z.infer<typeof supabaseSettingSchema>
@@ -40,6 +40,7 @@ export const systemSettingSchema = z.object({
   language: z.string().min(1, '请选择一种语言'),
   llmModelName: z.string().min(1, '请选择一个LLM模型'),
   embeddingModelName: z.string().min(1, '请选择一个Embedding模型'),
+  embeddingDimensions: z.number().min(1, '嵌入模型维度必须大于0').max(4096, '嵌入模型维度不能超过4096'),
 })
 
 export type SystemSettingType = z.infer<typeof systemSettingSchema>

@@ -12,16 +12,16 @@ onMessage('saveModelSetting', async (setting) => {
     return
   }
 
-  await browser.storage.local.set({ modelSetting: setting.data })
+  await browser.storage.sync.set({ modelSetting: setting.data })
 })
 
 onMessage('getModelSetting', async () => {
-  const { modelSetting } = await browser.storage.local.get('modelSetting')
+  const { modelSetting } = await browser.storage.sync.get('modelSetting')
   return modelSetting
 })
 
 onMessage('getSupabaseSetting', async () => {
-  const { supabaseSetting } = await browser.storage.local.get('supabaseSetting')
+  const { supabaseSetting } = await browser.storage.sync.get('supabaseSetting')
   return supabaseSetting
 })
 
@@ -30,16 +30,16 @@ onMessage('saveSupabaseSetting', async (setting) => {
   if (!result.success) {
     return
   }
-  await browser.storage.local.set({ supabaseSetting: setting.data })
+  await browser.storage.sync.set({ supabaseSetting: setting.data })
 })
 
 onMessage('syncSavedSupabaseSetting', async () => {
-  const { supabaseSetting } = await browser.storage.local.get('supabaseSetting')
+  const { supabaseSetting } = await browser.storage.sync.get('supabaseSetting')
   return supabaseSetting
 })
 
 onMessage('getSystemSetting', async () => {
-  const { systemSetting } = await browser.storage.local.get('systemSetting')
+  const { systemSetting } = await browser.storage.sync.get('systemSetting')
   return systemSetting
 })
 
@@ -48,10 +48,10 @@ onMessage('saveSystemSetting', async (setting) => {
   if (!result.success) {
     return
   }
-  await browser.storage.local.set({ systemSetting: setting.data })
+  await browser.storage.sync.set({ systemSetting: setting.data })
 })
 
 onMessage('syncSavedSystemSetting', async () => {
-  const { systemSetting } = await browser.storage.local.get('systemSetting')
+  const { systemSetting } = await browser.storage.sync.get('systemSetting')
   return systemSetting
 })
