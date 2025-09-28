@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/entrypoints/index/components/theme-provider'
 import { Theme } from '@/lib/types'
 import { router } from './router'
 import { useStore } from './store'
+import './readability'
 
 export function Root() {
   const { systemSetting } = useStore()

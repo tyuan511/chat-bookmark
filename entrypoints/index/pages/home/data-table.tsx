@@ -1,7 +1,5 @@
 import type {
-  ColumnDef,
   Row,
-  RowSelectionState,
   Table as TanStackTable,
 } from '@tanstack/react-table'
 import type {
@@ -10,11 +8,7 @@ import type {
 } from '@tanstack/react-virtual'
 import type { BookMarkNode } from '@/lib/types'
 
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
+import { flexRender } from '@tanstack/react-table'
 import {
   useVirtualizer,
 } from '@tanstack/react-virtual'

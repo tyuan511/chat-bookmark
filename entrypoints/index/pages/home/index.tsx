@@ -1,9 +1,7 @@
 import type { ColumnDef, RowSelectionState } from '@tanstack/react-table'
 import type { BookMarkNode } from '@/lib/types'
 import {
-
   getCoreRowModel,
-
   useReactTable,
 } from '@tanstack/react-table'
 import { RotateCcw } from 'lucide-react'
@@ -11,9 +9,10 @@ import { useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 
+import { sendMessage } from '@/lib/messaging'
 import { flattenBookmarksWithPath, getFavicon } from '@/lib/utils'
-import { useStore } from '../store'
-import { DataTable } from './home/data-table'
+import { useStore } from '../../store'
+import { DataTable } from './data-table'
 
 export function HomePage() {
   const { bookmarks } = useStore()
@@ -21,6 +20,8 @@ export function HomePage() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const flatBookmarks = useMemo(() => flattenBookmarksWithPath(bookmarks), [bookmarks])
   const [tableWidth, setTableWidth] = useState(0)
+
+  const selectedRows = useMemo(() => Object.entries(rowSelection).filter(([_, v]) => v).map(([k, _]) => k), [rowSelection])
 
   useEffect(() => {
     const onSizeChange = () => {
@@ -119,8 +120,7 @@ export function HomePage() {
             size="icon"
             variant="ghost"
             onClick={() => {
-              console.log('重新解析:', row.original)
-              // 这里可以添加重新解析的逻辑
+              sendMessage('parseBookmark', row.original)
             }}
           >
             <RotateCcw className="h-4 w-4" />
@@ -147,9 +147,25 @@ export function HomePage() {
     }
   }, [])
 
+  const onParseSelectedRows = useCallback(async () => {
+    if (selectedRows.length === 0) {
+      return
+    }
+    const selectedBookmarks = selectedRows.map(rowId => table.getRow(rowId).original)
+    await sendMessage('parseBookmarks', selectedBookmarks)
+  }, [selectedRows, table])
+
   return (
-    <div className="h-[calc(100vh-120px)] w-full overflow-hidden" ref={tableContainer}>
-      <DataTable table={table} className="h-full" />
+    <div className="h-[calc(100vh-100px)] w-full overflow-hidden flex flex-col" ref={tableContainer}>
+      <div className="flex items-center justify-between mb-4 h-10">
+        <h2 className="text-lg font-bold">书签列表</h2>
+        <div>
+          {selectedRows.length > 0 && (
+            <Button onClick={onParseSelectedRows}>解析选中</Button>
+          )}
+        </div>
+      </div>
+      <DataTable table={table} className="flex-1" />
     </div>
   )
 }

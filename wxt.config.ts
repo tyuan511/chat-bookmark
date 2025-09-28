@@ -9,6 +9,7 @@ export default defineConfig({
     name: 'Chat Bookmark',
     description: 'Chat with your bookmarks',
     permissions: ['bookmarks', 'favicon', 'storage'],
+    host_permissions: ['https://*/'],
     web_accessible_resources: [
       {
         resources: ['_favicon/*'],

@@ -1,7 +1,6 @@
 import { Bolt, Home, Loader2, MessageCircle } from 'lucide-react'
 import { Link, Outlet } from 'react-router'
 import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tree } from '@/components/ui/tree'
 import { useStore } from '../store'
 
@@ -50,7 +49,7 @@ export function Layout() {
             </div>
           </div>
           <div className="flex flex-1 gap-4">
-            <ScrollArea className="h-[calc(100vh-120px)] border rounded-lg">
+            <div className="h-[calc(100vh-100px)] border rounded-lg overflow-auto">
               <div className="p-4  w-[300px]">
                 {bookmarks.length > 0
                   ? (
@@ -65,8 +64,8 @@ export function Layout() {
                       </div>
                     )}
               </div>
-            </ScrollArea>
-            <div className="flex-1 min-w-0">
+            </div>
+            <div className="flex-1 min-w-0 overflow-auto">
               <Outlet />
             </div>
           </div>

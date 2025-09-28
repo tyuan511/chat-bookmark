@@ -44,3 +44,10 @@ export const systemSettingSchema = z.object({
 })
 
 export type SystemSettingType = z.infer<typeof systemSettingSchema>
+
+export interface ReadabilityResult {
+  title: string
+  description: string
+  content: string
+  lang: string
+}
