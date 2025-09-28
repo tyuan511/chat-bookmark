@@ -17,6 +17,7 @@
     "shadcn": "shadcn"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.38",
     "@hookform/resolvers": "^5.2.2",
     "@mozilla/readability": "^0.6.0",
     "@radix-ui/react-checkbox": "^1.3.3",
@@ -30,6 +31,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.13.12",
     "@webext-core/messaging": "^2.3.0",
+    "ai": "^5.0.56",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",

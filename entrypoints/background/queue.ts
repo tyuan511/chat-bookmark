@@ -1,5 +1,8 @@
 import type { ReadabilityResult } from '@/lib/types'
+import z from 'zod'
 import { sendMessage } from '@/lib/messaging'
+import { embed, generateObject } from './ai'
+import { CATEGORIZE_CONTENT_PROMPT } from './prompt'
 
 export class BookmarkParseQueue {
   private queue: Array<{
@@ -114,6 +117,7 @@ export class BookmarkParseQueue {
       }
 
       const parsedData = await this.performActualParsing(bookmark)
+      console.log(parsedData)
 
       return {
         id: bookmark.id,
@@ -134,19 +138,19 @@ export class BookmarkParseQueue {
    * 执行实际的书签解析
    * 这里可以集成各种AI服务和数据处理逻辑
    */
-  private async performActualParsing(bookmark: any): Promise<any> {
+  private async performActualParsing(bookmark: any): Promise<{ summary: string, categories: string[], embedding: number[], contentLength: number, language: string }> {
     const article = await this.fetchPageContent(bookmark.url)
-    // const [embedding, categories] = await Promise.all([
-    //   this.generateEmbedding(pageContent),
-    //   this.categorizeContent(pageContent),
-    // ])
+    const [embedding, { categories, summary }] = await Promise.all([
+      this.generateEmbedding(article.content),
+      this.analysisContent(article),
+    ])
 
     return {
-      summary: `这是 ${bookmark.title} 的解析摘要`,
-      categories: [],
-      embedding: [],
+      summary,
+      categories,
+      embedding,
       contentLength: article.content.length,
-      language: 'zh-CN',
+      language: article.lang || 'zh-CN',
     }
   }
 
@@ -166,15 +170,31 @@ export class BookmarkParseQueue {
    */
   private async generateEmbedding(text: string): Promise<number[]> {
     console.log(text)
-    throw new Error('嵌入向量生成功能待实现')
+    const { embedding } = await embed({
+      value: text,
+    })
+    console.log('generateEmbedding', embedding)
+    return embedding
   }
 
   /**
    * 内容分类（AI模型）
    */
-  private async categorizeContent(content: any): Promise<string[]> {
-    console.log(content)
-    throw new Error('内容分类功能待实现')
+  private async analysisContent(article: ReadabilityResult): Promise<{ summary: string, categories: string[] }> {
+    const res = await generateObject({
+      prompt: CATEGORIZE_CONTENT_PROMPT.replace('{{title}}', article.title).replace('{{description}}', article.description).replace('{{content}}', article.content),
+      schema: z.object({
+        categories: z.array(z.string()),
+        summary: z.string(),
+      }),
+    } as any)
+    try {
+      return { summary: (res.object as any).summary || '', categories: (res.object as any).categories || [] }
+    }
+    catch (error) {
+      console.error('解析分类结果失败:', error)
+      return { summary: '', categories: [] }
+    }
   }
 
   /**
